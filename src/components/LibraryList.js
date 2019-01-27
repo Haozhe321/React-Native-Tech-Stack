@@ -8,15 +8,16 @@ class LibraryList extends Component{
         return <ListItem data={ data } />;
     }
 
-    render()
+    render() {
         return (
             <FlatList
                 data={this.props.dataToShow}
                 renderItem={this.renderItem}
                 keyExtractor={(data) => data.id}
             />
-        )
+        );
     }
+
 }
 
 //state is the argument
