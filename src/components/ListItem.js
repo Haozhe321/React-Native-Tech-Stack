@@ -1,16 +1,38 @@
 import React, { Component } from 'react';
 import { CardSection } from './common';
-import {View, Text, TouchableWithoutFeedback } from 'react-native';
+import {View,
+        Text,
+        TouchableWithoutFeedback,
+        LayoutAnimation,
+        Platform,
+        UIManager } from 'react-native';
 import { connect } from 'react-redux'; //window to redux from react side. used here to call action creator
 import * as actions from '../actions';
 
 class ListItem extends Component {
-    renderDescription() {
-        const {data, selectedLibraryId} = this.props;
+    //called whenever component is to be rerendered
+    constructor() {
+        super();
+        if (Platform.OS === 'android')
+            UIManager.setLayoutAnimationEnabledExperimental
+            && UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
 
-        if (data.item.id === selectedLibraryId) {
+    componentWillUpdate() {
+        console.log("update!");
+        LayoutAnimation.spring();
+    }
+
+    renderDescription() {
+        const {data, expanded} = this.props;
+
+        if (expanded) {
             return (
-                <Text> {data.item.description} </Text>
+                <CardSection>
+                    <Text style={{flex : 1}}>
+                        {data.item.description}
+                    </Text>
+                </CardSection>
             );
         }
 
@@ -43,8 +65,10 @@ const styles = {
     }
 }
 
-const mapStateToProps = state => {
-    return { selectedLibraryId: state.selectedLibraryId };
+const mapStateToProps = (state, ownProps) => {
+    const expanded = state.selectedLibraryId === ownProps.data.item.id;
+
+    return { expanded };
 }
 
 //take the actions and pass to our component into as props
