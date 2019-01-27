@@ -1,16 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux;';
-
+import { createStore } from 'redux';
+import reducers from './reducers';
+import { Header } from './components/common';
+import LibraryList from './components/LibraryList';
 
 //store holds application state
 //provider translates the data in the store to something react can use
 
 const App = () => {
     return (
-        <Provider store={createStore}>
-            <View />
+        <Provider store={createStore(reducers)}>
+            <View>
+                <Header headerText='Tech Stack' />
+                <LibraryList />
+            </View>
         </Provider>
     );
 };
